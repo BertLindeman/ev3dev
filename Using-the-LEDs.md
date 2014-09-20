@@ -1,4 +1,4 @@
-NOTE: You currently have to be root to use the LEDs, or (since kernel update to 3.16.1) be a member of the ```ev3dev``` group.
+NOTE: You currently have to be root to use the LEDs.
 
 ### Basics
 When the EV3 is booting, the LEDs flash amber. When it is finished booting, they turn solid green.
@@ -21,13 +21,11 @@ root@ev3dev:/sys/class/leds/ev3:green:left# ls
 brightness  device  max_brightness  subsystem  trigger  uevent
 ```
 
-Since 3.16.1 we **can** control brightness up to ```max_brightness```. 
-Brightness 1 is hardly to be seen.
-Let's turn the LED off and back on.
+We can't control brightness, so ignore ```max_brightness``` and treat brightness like an on/off switch. Let's turn the LED off and back on.
 
 ```sh
 root@ev3dev:/sys/class/leds/ev3:green:left# echo 0 > brightness
-root@ev3dev:/sys/class/leds/ev3:green:left# echo 64 > brightness
+root@ev3dev:/sys/class/leds/ev3:green:left# echo 1 > brightness
 ```
 
 ### Triggers
