@@ -1,4 +1,5 @@
-The buttons on the EV3 are mapped as regular keyboard keys. UP, DOWN, LEFT, RIGHT, ENTER and ESC.
+The buttons on the EV3 are mapped as regular keyboard keys. UP, DOWN, LEFT, RIGHT, ENTER and BACKSPACE.
+The mapping on wheezy was UP, DOWN, LEFT, RIGHT, ENTER and **ESC**.
 
 TODO: add photo.
 
@@ -22,7 +23,8 @@ KEY_DOWN = 108
 KEY_LEFT = 105
 KEY_RIGHT = 106
 KEY_ENTER = 28
-KEY_ESC = 1
+# KEY_ESC = 1      ## on wheezy
+KEY_BACKSPACE = 14 ## on jessie
 
 KEY_MAX = 0x2ff
 
@@ -46,7 +48,7 @@ def main():
         print "ioctl error", ret
         sys.exit(1)
 
-    for key in ['UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'ESC']:
+    for key in ['UP', 'DOWN', 'LEFT', 'RIGHT', 'ENTER', 'BACKSPACE']:
         key_code = globals()['KEY_' + key]
         key_state = test_bit(key_code, buf) and "pressed" or "released"
         print '%s:' % key, key_state
@@ -62,32 +64,30 @@ If you want your program to be event driven, you can read the ```/dev/input/by-p
 Here is an example. It prints out 2 lines each time you press a button on the EV3 and 2 more lines each time you release a button. And of course, press CTRL+C to end.
 
 ```sh
-root@ev3dev:/sys/class/leds# hexdump -e \
-'"timestamp:%d.%6d""\t""" 1/2 "type:%i""\t"""  1/2 "code:%3i""\t"""  "value:%d\n"' \
-< /dev/input/by-path/platform-gpio-keys.0-event 
-timestamp:1391366282.119886	type:1	code:  1	value:0
-timestamp:1391366282.120100	type:0	code:  0	value:0
-timestamp:1391366282.829942	type:1	code:  1	value:1
-timestamp:1391366282.830179	type:0	code:  0	value:0
-timestamp:1391366284.300099	type:1	code:105	value:0
-timestamp:1391366284.300319	type:0	code:  0	value:0
-timestamp:1391366284.829989	type:1	code:105	value:1
-timestamp:1391366284.830223	type:0	code:  0	value:0
-timestamp:1391366286.019866	type:1	code:103	value:0
-timestamp:1391366286.020076	type:0	code:  0	value:0
-timestamp:1391366286.319967	type:1	code:103	value:1
-timestamp:1391366286.320202	type:0	code:  0	value:0
-timestamp:1391366287.169925	type:1	code:106	value:0
-timestamp:1391366287.169973	type:0	code:  0	value:0
-timestamp:1391366287.479994	type:1	code:106	value:1
-timestamp:1391366287.480234	type:0	code:  0	value:0
-timestamp:1391366288.339882	type:1	code: 28	value:0
-timestamp:1391366288.340092	type:0	code:  0	value:0
-timestamp:1391366288.699929	type:1	code: 28	value:1
-timestamp:1391366288.700291	type:0	code:  0	value:0
-timestamp:1391366289.470046	type:1	code:108	value:0
-timestamp:1391366289.470263	type:0	code:  0	value:0
-timestamp:1391366289.829943	type:1	code:108	value:1
-timestamp:1391366289.830176	type:0	code:  0	value:0
+root@ev3dev:/sys/class/leds# hexdump -e '"timestamp:%d.%6d""\t""" 1/2 "type:%i""\t"""  1/2 "code:%3i""\t"""  "value:%d\n"' /dev/input/by-path/platform-gpio-keys.0-event
+timestamp:1411233011.710843     type:1  code: 14        value:0
+timestamp:1411233011.710843     type:0  code:  0        value:0
+timestamp:1411233011.930731     type:1  code: 14        value:1
+timestamp:1411233011.930731     type:0  code:  0        value:0
+timestamp:1411233018.910730     type:1  code:103        value:0
+timestamp:1411233018.910730     type:0  code:  0        value:0
+timestamp:1411233019.110728     type:1  code:103        value:1
+timestamp:1411233019.110728     type:0  code:  0        value:0
+timestamp:1411233027. 40849     type:1  code:108        value:0
+timestamp:1411233027. 40849     type:0  code:  0        value:0
+timestamp:1411233027.260726     type:1  code:108        value:1
+timestamp:1411233027.260726     type:0  code:  0        value:0
+timestamp:1411233029.280731     type:1  code: 28        value:0
+timestamp:1411233029.280731     type:0  code:  0        value:0
+timestamp:1411233029.450733     type:1  code: 28        value:1
+timestamp:1411233029.450733     type:0  code:  0        value:0
+timestamp:1411233032.770741     type:1  code:105        value:0
+timestamp:1411233032.770741     type:0  code:  0        value:0
+timestamp:1411233032.950844     type:1  code:105        value:1
+timestamp:1411233032.950844     type:0  code:  0        value:0
+timestamp:1411233035.800922     type:1  code:106        value:0
+timestamp:1411233035.800922     type:0  code:  0        value:0
+timestamp:1411233036. 20729     type:1  code:106        value:1
+timestamp:1411233036. 20729     type:0  code:  0        value:0
 ^C
 ```
